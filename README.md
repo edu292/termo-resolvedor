@@ -2,7 +2,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.10-blue?style=for-the-badge&logo=python)
 ![Status](https://img.shields.io/badge/Status-Em%20desenvolvimento-yellow?style=for-the-badge)
-![Web Scraping](https://img.shields.io/badge/WebScraping-BeautifulSoup-red?style=for-the-badge)
+![Web Scraping](https://img.shields.io/badge/-selenium-%43B02A?style=for-the-badge&logo=selenium&logoColor=white)
 ![Automação](https://img.shields.io/badge/Automação-Bot-green?style=for-the-badge)
 
 Um projeto que **resolve automaticamente o jogo Termo** usando técnicas de web scraping, filtragem inteligente de palavras e lógica de tentativa. Ideal para estudar **estratégias de automação, algoritmos de eliminação e manipulação de dados com Python**.
@@ -12,7 +12,7 @@ Um projeto que **resolve automaticamente o jogo Termo** usando técnicas de web 
 ## 🔍 Preview
 
 <p align="center">
-  <img src="https://via.placeholder.com/600x300?text=Simula%C3%A7%C3%A3o+do+Resolvedor+do+Termo" alt="Preview do bot jogando o Termo" />
+  <img src="assets/preview.png" alt="Preview do bot jogando o Termo" />
 </p>
 
 ---
