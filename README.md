@@ -1,0 +1,1 @@
+# termo-resolvedor
