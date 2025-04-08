@@ -1,4 +1,4 @@
-# 🤖 Resolvedor Automático do Termo
+# Resolvedor Automático do Termo
 
 ![Python](https://img.shields.io/badge/Python-3.10-blue?style=for-the-badge&logo=python)
 ![Web Scraping](https://img.shields.io/badge/-selenium-%43B02A?style=for-the-badge&logo=selenium&logoColor=white)
@@ -6,15 +6,11 @@
 
 Um projeto que **resolve automaticamente o jogo Termo** usando técnicas de web scraping, filtragem inteligente de palavras e lógica de tentativa. Ideal para estudar **estratégias de automação, algoritmos de eliminação e manipulação de dados com Python**.
 
----
-
 ## 🔍 Preview
 
 <p align="center">
   <img src="assets/preview.png" alt="Preview do bot jogando o Termo" />
 </p>
-
----
 
 ## 🧩 Como funciona?
 
@@ -25,5 +21,3 @@ Um projeto que **resolve automaticamente o jogo Termo** usando técnicas de web 
 5. As palavras possíveis são exibidas no terminal a cada filtragem.
 6. Caso se depare com uma palavra que não conheça em um tabuleiro, ele resolve o próximo.
 7. Chega até o final do jogo e registra a palavra no dicionário com base na mensagem de derrota.
-
----
