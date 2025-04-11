@@ -26,9 +26,3 @@ Um projeto que **resolve automaticamente o jogo Termo** usando técnicas de web 
 - Pressione enter para termo
 - Digite 2 para dueto
 - Digite 4 para quarteto
-
-## ▶️ Como Executar
-1. Instale os requisitos:
-<pre><code> pip install -r requirements.txt </code></pre>
-2. Execute o script:
-<pre><code> python termoResolvedor.py </code></pre>
