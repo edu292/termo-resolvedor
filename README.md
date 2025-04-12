@@ -7,10 +7,8 @@
 Um projeto que **resolve automaticamente o jogo Termo** usando técnicas de web scraping, filtragem inteligente de palavras e lógica de tentativa. Ideal para estudar **estratégias de automação, algoritmos de eliminação e manipulação de dados com Python**.
 
 ## 🔍 Preview
+![pycharm64_FQDScjqG2U](https://github.com/user-attachments/assets/f5afaaf9-ce61-4989-b11e-9c2e7249457c)
 
-<p align="center">
-  <img src="assets/preview.png" alt="Preview do bot jogando o Termo" />
-</p>
 
 ## 🧩 Como funciona?
 
