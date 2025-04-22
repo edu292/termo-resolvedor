@@ -43,9 +43,10 @@ class Tabuleiro:
 
 
 class Partida:
-    def __init__(self, tabuleiros):
+    def __init__(self, tabuleiros, html_body):
         self.linha_atual = 0
         self.tabuleiros = tabuleiros
+        self.html_body = html_body
         self.numero_linhas = int(tabuleiros[0].get_attribute('rows'))
         self.dicionario = ler_dicionario()
         self.palavra_desconhecida = False
@@ -56,8 +57,8 @@ class Partida:
             for indice_linha in range(0, self.numero_linhas):
                 if indice_linha == self.linha_atual:
                     self.linha_atual += 1
-                    body.send_keys(tabuleiro_obj.palavras_possiveis[0])
-                    body.send_keys(Keys.ENTER)
+                    self.html_body.send_keys(tabuleiro_obj.palavras_possiveis[0])
+                    self.html_body.send_keys(Keys.ENTER)
                     sleep(2)
                 tabuleiro_concluido, dicas = verificar_tabuleiro(tabuleiro, indice_linha)
                 if tabuleiro_concluido:
@@ -75,8 +76,8 @@ class Partida:
         print('Completando linhas')
         numero_linhas_faltando = self.numero_linhas - self.linha_atual
         for a in range(0, numero_linhas_faltando):
-            body.send_keys('teste')
-            body.send_keys(Keys.ENTER)
+            self.html_body.send_keys('teste')
+            self.html_body.send_keys(Keys.ENTER)
             sleep(2)
         notificacao = driver.find_element(By.XPATH, '/html/body/wc-notify').text
         palavras_partida = notificacao[notificacao.index(':') + 2:].strip(',').split(' ')
@@ -128,5 +129,5 @@ body = driver.find_element(By.XPATH, '/html/body')
 body.click()
 
 elementos_tabuleiros = body.find_elements(By.CSS_SELECTOR, 'wc-board')
-partida = Partida(elementos_tabuleiros)
+partida = Partida(elementos_tabuleiros, body)
 partida.resolver()
