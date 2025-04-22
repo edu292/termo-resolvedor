@@ -18,28 +18,34 @@ class Tabuleiro:
         self.tabuleiro = tabuleiro
         self.palavras_possiveis = dicionario
         self.numero_linhas = numero_linhas
-        self.palavra_deconhecida = False
+        self.palavra_desconhecida = False
 
     def analisar_dicas(self, dicas):
         letras_certas = []
-        letras_erradas = []
+        letras_erradas = set()
+        letras_lugar_errado = []
         for indice, (letra, tipo) in enumerate(dicas):
             if tipo == Dica.LETRA_ERRADA and letra not in letras_erradas:
-                self.palavras_possiveis = [palavra for palavra in self.palavras_possiveis if palavra[indice] != letra]
-                letras_erradas.append(letra)
+                letras_erradas.add(letra)
             elif tipo == Dica.LETRA_LUGAR_ERRADO:
-                self.palavras_possiveis = [palavra for palavra in self.palavras_possiveis
-                                           if letra in palavra and palavra[indice] != letra]
-                letras_certas.append(letra)
+                letras_lugar_errado.append((letra, indice))
             elif tipo == Dica.LETRA_CERTA:
-                self.palavras_possiveis = [palavra for palavra in self.palavras_possiveis if palavra[indice] == letra]
-                letras_certas.append(letra)
-        letras_erradas = [letra for letra in letras_erradas if letra not in letras_certas]
-        for letra_errada in letras_erradas:
-            self.palavras_possiveis = [palavra for palavra in self.palavras_possiveis if letra_errada not in palavra]
+                letras_certas.append((letra, indice))
+        letras_erradas -= {lc for lc, _ in letras_certas}
+        letras_erradas -= {lle for lle, _ in letras_lugar_errado}
+        novas_palavras_possiveis = []
+        for palavra in self.palavras_possiveis:
+            if any(palavra[i] != l for l, i in letras_certas):
+                continue
+            if any(l not in palavra or palavra[i] == l for l, i in letras_lugar_errado):
+                continue
+            if letras_erradas.intersection(palavra):
+                continue
+            novas_palavras_possiveis.append(palavra)
+        self.palavras_possiveis = novas_palavras_possiveis
         print(self.palavras_possiveis)
         if len(self.palavras_possiveis) == 0:
-            self.palavra_deconhecida = True
+            self.palavra_desconhecida = True
 
 
 class Partida:
@@ -52,7 +58,7 @@ class Partida:
         self.palavra_desconhecida = False
 
     def resolver(self):
-        for tabuleiro in self.tabuleiros:
+        for indice_tabuleiro, tabuleiro in enumerate(self.tabuleiros, 1):
             tabuleiro_obj = Tabuleiro(tabuleiro, self.dicionario, self.numero_linhas)
             for indice_linha in range(0, self.numero_linhas):
                 if indice_linha == self.linha_atual:
@@ -64,10 +70,9 @@ class Partida:
                 if tabuleiro_concluido:
                     break
                 tabuleiro_obj.analisar_dicas(dicas)
-                if tabuleiro_obj.palavra_deconhecida:
+                if tabuleiro_obj.palavra_desconhecida:
                     self.palavra_desconhecida = True
-                    print(f'Palavra desconhecida no tabuleiro {elementos_tabuleiros.index(tabuleiro) + 1}')
-                    indice_linha += 1
+                    print(f'Palavra desconhecida no tabuleiro {indice_tabuleiro}')
                     break
         if self.palavra_desconhecida:
             self.aprender_palavra()
@@ -79,11 +84,11 @@ class Partida:
             self.html_body.send_keys('teste')
             self.html_body.send_keys(Keys.ENTER)
             sleep(2)
-        notificacao = driver.find_element(By.XPATH, '/html/body/wc-notify').text
-        palavras_partida = notificacao[notificacao.index(':') + 2:].strip(',').split(' ')
+        notificacao = body.find_element(By.XPATH, '/html/body/wc-notify').text
+        palavras_partida = notificacao[notificacao.index(':') + 2:].split(' ')
         with open('palavras.txt', 'a') as txt:
             for palavra in palavras_partida:
-                palavra = unidecode(palavra)
+                palavra = unidecode(palavra.strip(','))
                 if palavra not in self.dicionario:
                     print(f'Palavra adicionada: {palavra}')
                     txt.write(palavra + '\n')
@@ -98,7 +103,7 @@ def verificar_tabuleiro(tabuleiro, indice_linha):
         letra = celula.text.lower()
         letra = unidecode(letra)
         if classe == 'letter right done':
-            return 1, 0
+            return 1, []
         elif classe == 'letter wrong':
             dicas.append((letra, Dica.LETRA_ERRADA))
         elif classe == 'letter place':
@@ -110,8 +115,9 @@ def verificar_tabuleiro(tabuleiro, indice_linha):
 
 
 def ler_dicionario():
-    with open('palavras.txt', 'r') as txt:
-        dicionario = txt.read().splitlines()
+    with open('palavras.txt', 'a+') as txt:
+        txt.seek(0)
+        dicionario =  txt.read().splitlines()
 
     return dicionario
 
