@@ -1,6 +1,5 @@
 # Resolvedor Automático do Termo
 
-![Python](https://img.shields.io/badge/Python-3.10-blue?style=for-the-badge&logo=python)
 ![Web Scraping](https://img.shields.io/badge/-selenium-%43B02A?style=for-the-badge&logo=selenium&logoColor=white)
 ![Automação](https://img.shields.io/badge/Automação-Bot-green?style=for-the-badge)
 
