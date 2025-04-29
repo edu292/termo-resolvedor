@@ -22,30 +22,41 @@ class Tabuleiro:
 
     def analisar_dicas(self, dicas):
         letras_certas = []
-        letras_erradas = set()
+        letras_filtrar = []
         letras_lugar_errado = []
         for indice, (letra, tipo) in enumerate(dicas):
-            if tipo == Dica.LETRA_ERRADA and letra not in letras_erradas:
-                letras_erradas.add(letra)
+            if tipo == Dica.LETRA_ERRADA:
+                letras_filtrar.append((letra, indice))
             elif tipo == Dica.LETRA_LUGAR_ERRADO:
                 letras_lugar_errado.append((letra, indice))
             elif tipo == Dica.LETRA_CERTA:
                 letras_certas.append((letra, indice))
-        letras_erradas -= {lc for lc, _ in letras_certas}
-        letras_erradas -= {lle for lle, _ in letras_lugar_errado}
+
+        letras_erradas = []
+        for letra_indice in letras_filtrar:
+            letra_errada = letra_indice[0]
+            if letra_errada in {lle for lle, i in letras_lugar_errado}:
+                letras_lugar_errado.append(letra_indice)
+                continue
+            if letra_errada in {lc for lc, i in letras_certas}:
+                letras_lugar_errado.append(letra_indice)
+                continue
+            letras_erradas.append(letra_errada)
+
         novas_palavras_possiveis = []
         for palavra in self.palavras_possiveis:
             if any(palavra[i] != l for l, i in letras_certas):
                 continue
             if any(l not in palavra or palavra[i] == l for l, i in letras_lugar_errado):
                 continue
-            if letras_erradas.intersection(palavra):
+            if any(l in palavra for l in letras_erradas):
                 continue
             novas_palavras_possiveis.append(palavra)
-        self.palavras_possiveis = novas_palavras_possiveis
-        print(self.palavras_possiveis)
-        if len(self.palavras_possiveis) == 0:
+
+        if len(novas_palavras_possiveis) == 0:
             self.palavra_desconhecida = True
+        self.palavras_possiveis = novas_palavras_possiveis
+        print(novas_palavras_possiveis)
 
 
 class Partida:
